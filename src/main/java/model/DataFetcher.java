@@ -7,7 +7,12 @@ import java.net.http.HttpResponse;
 
 public class DataFetcher {
 
-    String mail_id="3338855";
+    String mail_id;
+
+    //put the mail_id no to get the corresponding data from table 2025_06
+    public void setMail_id(String mail_id) {
+        this.mail_id = mail_id;
+    }
 
     HttpClient client = HttpClient.newHttpClient();
     HttpRequest request = HttpRequest.newBuilder()
