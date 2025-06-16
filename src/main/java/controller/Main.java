@@ -15,8 +15,6 @@ public class Main {
     public static void main(String args[]) throws Exception {
         DataFetcher df = new DataFetcher();
         Decoder decode = new Decoder();
-//        System.out.println(decode.decoder(df.getData()));
-//        System.out.println(df.getData());
         Gson gson = new Gson();
         Type listType = new TypeToken<List<JsonExtractor>>() {}.getType();
         List<JsonExtractor> jeList = gson.fromJson(df.getData(), listType);

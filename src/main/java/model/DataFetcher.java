@@ -7,9 +7,11 @@ import java.net.http.HttpResponse;
 
 public class DataFetcher {
 
+    String mail_id="3338855";
+
     HttpClient client = HttpClient.newHttpClient();
     HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create("https://helpdesk.c-zentrix.com/encode_mail_body.php?mail_id=3335111&file_path=/var/www/html/Support_CRM/mail_body/localhost.localdomain/2025_06/mail_body_3335111.txt"))
+            .uri(URI.create("https://helpdesk.c-zentrix.com/encode_mail_body.php?mail_id="+mail_id+"&file_path=/var/www/html/Support_CRM/mail_body/localhost.localdomain/2025_06/mail_body_"+mail_id+".txt"))
             .GET()
             .build();
 
