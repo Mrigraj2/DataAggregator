@@ -30,7 +30,7 @@ public class Main {
 
         String apiResponse;
 
-        //Create an excel file for putting data in it
+        //Create an Excel file for putting data in it
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("MailData");
 
@@ -62,7 +62,7 @@ public class Main {
             try (FileOutputStream fileOut = new FileOutputStream("MailData.xlsx")) {
                 workbook.write(fileOut);
                 workbook.close();
-                System.out.println("Excel file 'output.xlsx' written successfully.");
+                System.out.println("Excel file 'MailData.xlsx' written successfully.");
             }
         }
 
