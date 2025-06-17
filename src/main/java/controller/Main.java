@@ -58,12 +58,13 @@ public class Main {
                 row.createCell(1).setCellValue(decode.decoder(jsonExtractor.getMail_body_base64()));
             }
 
-            // save the Excel file
-            try (FileOutputStream fileOut = new FileOutputStream("MailData.xlsx")) {
-                workbook.write(fileOut);
-                workbook.close();
-                System.out.println("Excel file 'MailData.xlsx' written successfully.");
-            }
+        }
+
+        // save the Excel file
+        try (FileOutputStream fileOut = new FileOutputStream("MailData.xlsx")) {
+            workbook.write(fileOut);
+            workbook.close();
+            System.out.println("Excel file 'MailData.xlsx' written successfully.");
         }
 
 
