@@ -5,7 +5,7 @@ import java.util.Vector;
 
 public class JDBC {
 
-    String sql = "select mail_id from mail";
+    String sql = "select mail_id from mail order by mail_id desc limit 10";
     String url = "jdbc:mysql://192.168.99.32:3306/crm_manager_1?useUnicode=true&characterEncoding=utf8&serverTimezone=UTC";
     String user = "db_reader_root";
     String password = "rootroot";
