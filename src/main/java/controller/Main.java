@@ -18,18 +18,31 @@ public class Main {
         Gson gson = new Gson();
         Type listType = new TypeToken<List<JsonExtractor>>(){}.getType();
 
-        //Fetch Data
-        String data = df.getData();
-        System.out.println(data);
+        //Query to find mail_id and put it in the String vector
+        JDBC query = new JDBC();
+        query.arrayInsertion();
 
-        //Data extraction
-        List<JsonExtractor> jse = gson.fromJson(data,listType);
+        String apiResponse;
 
-        //Data printing
-        for (JsonExtractor jsonExtractor: jse){
-            System.out.println(jsonExtractor.getMail_body_base64());
-            System.out.println(decode.decoder(jsonExtractor.getMail_body_base64()));
+        //Fetch data using the vector entries
+
+        for (int i = 0; i < JDBC.mail_id.size(); i++) {
+            df.setMail_id(JDBC.mail_id.get(i));
+            apiResponse=df.getData();
+            //Data extraction
+            List<JsonExtractor> jse = gson.fromJson(apiResponse,listType);
+
+            //Data printing
+            for (JsonExtractor jsonExtractor: jse){
+                System.out.println(jsonExtractor.getMail_body_base64());
+                System.out.println(decode.decoder(jsonExtractor.getMail_body_base64()));
+            }
         }
+
+
+
+
+
 
 
 

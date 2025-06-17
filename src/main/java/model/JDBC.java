@@ -11,7 +11,7 @@ public class JDBC {
     String password = "rootroot";
     Connection connection = DriverManager.getConnection(url,user,password);
 
-    public static Vector<Integer> mail_id = new Vector<>();
+    public static Vector<String> mail_id = new Vector<>();
 
     public JDBC() throws Exception {
     }
@@ -21,7 +21,7 @@ public class JDBC {
         Statement st = connection.createStatement();
         ResultSet resultSet = st.executeQuery(sql);
         while (resultSet.next()){
-            int x = resultSet.getInt("mail_id");
+            String x = String.valueOf(resultSet.getInt("mail_id"));
             mail_id.add(x);
         }
     }
