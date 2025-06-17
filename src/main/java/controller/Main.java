@@ -6,6 +6,12 @@ import model.DataFetcher;
 import model.Decoder;
 import model.JDBC;
 import model.JsonExtractor;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.io.FileOutputStream;
 import java.lang.reflect.Type;
 import java.util.List;
 
@@ -24,6 +30,15 @@ public class Main {
 
         String apiResponse;
 
+        //Create an excel file for putting data in it
+        Workbook workbook = new XSSFWorkbook();
+        Sheet sheet = workbook.createSheet("MailData");
+
+        Row header = sheet.createRow(0);
+        header.createCell(0).setCellValue("mail_id");
+        header.createCell(1).setCellValue("subject");
+        int rowIndex = 1;
+
         //Fetch data using the vector entries
 
         for (int i = 0; i < JDBC.mail_id.size(); i++) {
@@ -36,6 +51,18 @@ public class Main {
             for (JsonExtractor jsonExtractor: jse){
                 System.out.println(jsonExtractor.getMail_body_base64());
                 System.out.println(decode.decoder(jsonExtractor.getMail_body_base64()));
+
+                //Fill in the Excel sheet
+                Row row = sheet.createRow(rowIndex++);
+                row.createCell(0).setCellValue(JDBC.mail_id.get(i));  // mail_id
+                row.createCell(1).setCellValue(decode.decoder(jsonExtractor.getMail_body_base64()));
+            }
+
+            // save the Excel file
+            try (FileOutputStream fileOut = new FileOutputStream("MailData.xlsx")) {
+                workbook.write(fileOut);
+                workbook.close();
+                System.out.println("Excel file 'output.xlsx' written successfully.");
             }
         }
 
