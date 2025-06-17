@@ -17,7 +17,7 @@ import java.util.List;
 
 public class Main {
 
-    public static void main(String args[]) throws Exception {
+    public static void main(String[] args) throws Exception {
         DataFetcher df = new DataFetcher();
         Decoder decode = new Decoder();
 
@@ -47,7 +47,7 @@ public class Main {
             //Data extraction
             List<JsonExtractor> jse = gson.fromJson(apiResponse,listType);
 
-            //Data printing
+            //Data printing and filling Excel sheet
             for (JsonExtractor jsonExtractor: jse){
                 System.out.println(jsonExtractor.getMail_body_base64());
                 System.out.println(decode.decoder(jsonExtractor.getMail_body_base64()));
