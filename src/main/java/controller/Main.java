@@ -87,23 +87,33 @@ public class Main {
             df.setMail_id(currentMailId);
             apiResponse = df.getData();
 
-            // Decode API response
-            List<JsonExtractor> jse = gson.fromJson(apiResponse, listType);
+            // Check if the response is an error object
+            if (apiResponse.trim().startsWith("{") && apiResponse.contains("\"error\"")) {
+                System.out.println("Error fetching data for mail_id " + currentMailId + ": " + apiResponse);
+                continue; // Skip to next mail_id
+            }
 
-            for (JsonExtractor jsonExtractor : jse) {
-                String decodedBody = decode.decoder(jsonExtractor.getMail_body_base64());
+            // Proceed only if response is a valid list
+            if (apiResponse.trim().startsWith("[")) {
+                List<JsonExtractor> jse = gson.fromJson(apiResponse, listType);
 
-                // Search the matching row for this mail_id
-                for (int r = 1; r <= sheet.getLastRowNum(); r++) {
-                    Row row = sheet.getRow(r);
-                    if (row != null && row.getCell(0) != null) {
-                        String cellValue = row.getCell(0).getStringCellValue();
-                        if (currentMailId.equals(cellValue)) {
-                            row.createCell(count).setCellValue(decodedBody); // Set in "Body" column
-                            break;
+                for (JsonExtractor jsonExtractor : jse) {
+                    String decodedBody = decode.decoder(jsonExtractor.getMail_body_base64());
+
+                    // Search the matching row for this mail_id
+                    for (int r = 1; r <= sheet.getLastRowNum(); r++) {
+                        Row row = sheet.getRow(r);
+                        if (row != null && row.getCell(0) != null) {
+                            String cellValue = row.getCell(0).getStringCellValue();
+                            if (currentMailId.equals(cellValue)) {
+                                row.createCell(count).setCellValue(decodedBody); // Set in "Body" column
+                                break;
+                            }
                         }
                     }
                 }
+            } else {
+                System.out.println("Unexpected response format for mail_id " + currentMailId + ": " + apiResponse);
             }
         }
 
