@@ -26,4 +26,10 @@ public class JDBC {
         }
     }
 
+    public ResultSet resultSet() throws SQLException {
+        Statement st = connection.createStatement();
+        ResultSet resultSet = st.executeQuery(sql);
+        return resultSet;
+    }
+
 }
