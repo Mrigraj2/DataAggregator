@@ -49,7 +49,7 @@ public class Main {
 
         //Fill rows from DB output
         while(rs.next()){
-            Row rows = sheet.createRow(rowIndex++);
+            Row rows = sheet.createRow(++rowIndex);
             for(int i=1;i<=count;i++){
                 String value = rs.getString(i);
                 rows.createCell(i-1).setCellValue(value);
@@ -81,6 +81,32 @@ public class Main {
 //            }
 //
 //        }
+
+        for (int i = 0; i < JDBC.mail_id.size(); i++) {
+            String currentMailId = JDBC.mail_id.get(i);
+            df.setMail_id(currentMailId);
+            apiResponse = df.getData();
+
+            // Decode API response
+            List<JsonExtractor> jse = gson.fromJson(apiResponse, listType);
+
+            for (JsonExtractor jsonExtractor : jse) {
+                String decodedBody = decode.decoder(jsonExtractor.getMail_body_base64());
+
+                // Search the matching row for this mail_id
+                for (int r = 1; r <= sheet.getLastRowNum(); r++) {
+                    Row row = sheet.getRow(r);
+                    if (row != null && row.getCell(0) != null) {
+                        String cellValue = row.getCell(0).getStringCellValue();
+                        if (currentMailId.equals(cellValue)) {
+                            row.createCell(count).setCellValue(decodedBody); // Set in "Body" column
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
 
         // save the Excel file
         try (FileOutputStream fileOut = new FileOutputStream("MailData.xlsx")) {
